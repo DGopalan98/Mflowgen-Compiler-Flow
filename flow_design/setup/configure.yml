@@ -1,0 +1,12 @@
+name: setup
+
+inputs:
+  - flow_setup.sh
+
+outputs:
+  - flow_setup.sh
+
+commands:
+  - sh run_setup.sh
+
+

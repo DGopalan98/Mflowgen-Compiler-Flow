@@ -1,0 +1,15 @@
+name: hal_to_hw
+
+inputs:
+  - flow_setup.sh
+
+outputs: 
+  - compute.h
+  - compute.json
+
+commands:
+  - sh run_hal_to_hw.sh
+
+postconditions:
+  - assert File( 'outputs/compute.h' )        # must exist
+  - assert File( 'outputs/compute.json' )        # must exist

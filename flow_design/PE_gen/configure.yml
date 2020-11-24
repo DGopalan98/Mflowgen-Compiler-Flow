@@ -1,0 +1,18 @@
+name: PE_gen
+
+inputs:
+  - compute.json
+
+outputs: 
+  - PE.json
+  - rewrite_rules
+  - peak_eqs
+
+commands:
+  - sh run_PE.sh
+
+parameters:
+  dse_merge_param: undefined
+
+postconditions:
+  - assert File( 'outputs/PE.json' )        # must exist

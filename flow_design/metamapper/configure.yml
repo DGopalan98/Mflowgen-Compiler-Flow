@@ -1,0 +1,21 @@
+name: metamapper
+
+inputs:
+  - compute.json
+  - PE.json
+  - rewrite_rules
+  - peak_eqs
+
+outputs: 
+  - compute_mapped.json
+
+commands:
+  - sh run_metamapper.sh
+
+preconditions:
+  - assert File( 'inputs/compute.json' )              # must exist
+  - assert File( 'inputs/PE.json' )              # must exist
+
+postconditions:
+  - assert File( 'outputs/compute_mapped.json' )        # must exist
+
