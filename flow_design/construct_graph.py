@@ -28,6 +28,7 @@ def construct():
     'adk'            : adk_name,
     'adk_view'       : adk_view,
     'topographical'  : True,
+    #'dse_merge_param': "1-3", 
   }
 
   #-----------------------------------------------------------------------
@@ -139,7 +140,7 @@ def construct():
   #-----------------------------------------------------------------------
   # Parameterize
   #-----------------------------------------------------------------------
-  g.param_space( 'PE_gen', 'dse_merge_param', ["0", "1"] )
+  g.param_space( 'PE_gen', 'dse_merge_param', ["0", "1", "2", "3", "0-1", "1-3", "0-1-2", "0-1-2-3"] )
 
   g.update_params( parameters )
 

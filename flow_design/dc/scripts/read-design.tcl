@@ -29,7 +29,10 @@ if {[file exists [which setup-design-params.txt]]} {
   elaborate $dc_design_name
 }
 
+current_design WrappedPE_wrapped
+compile_ultra
 current_design $dc_design_name
+set_dont_touch WrappedPE_wrapped
 link
 
 #-------------------------------------------------------------------------

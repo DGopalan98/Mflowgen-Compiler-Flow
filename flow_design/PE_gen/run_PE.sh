@@ -28,7 +28,8 @@ echo "Done5"
 echo $PWD
 
 # Running PE Generation
-python dse_graph_analysis.py -f $PEgen_input_path/${app_name}_compute.json $dse_merge_param
+new_dse_merge_param=`echo $dse_merge_param | tr '-' ' '`
+python dse_graph_analysis.py -f $PEgen_input_path/${app_name}_compute.json $new_dse_merge_param
 
 echo "Done6"
 
