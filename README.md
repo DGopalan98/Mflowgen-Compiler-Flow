@@ -16,6 +16,18 @@ This project contains an mflowgen design for the AHA compiler flow.
 - **dc**: Synthesizes an optimized gate level netlist from the RTL description and provides area, power and timing reports. Note that the PE blocks have to be synthesized first and then the same PE instance is used to synthesize the entire RTL.   
 
 # Installation Requirements
+The following tools along with their respective requirements needs to be installed:
+- Mflowgen: `https://github.com/mflowgen/mflowgen`
+- Halide-to-Hardware: `https://github.com/StanfordAHA/Halide-to-Hardware` `clockwork` branch
+- MetaMapper: `https://github.com/rdaly525/MetaMapper` `aslpos-dse` branch
+- clockwork: `https://github.com/dillonhuff/clockwork` `dse-ross` branch
+- DSEGraphAnalysis: `https://github.com/jack-melchert/DSEGraphAnalysis`
+- ReGraph: `https://github.com/Kappa-Dev/ReGraph`
+- peak_generator: `https://github.com/jack-melchert/peak_generator`
+- DagVisitor: `https://github.com/rdaly525/DagVisitor`
+- garnet (is it needed?): `https://github.com/StanfordAHA/garnet` `mm-lassen` branch
+- lassen (is is needed?): `https://github.com/StanfordAHA/lassen` `garnet-integration` branch
+- Am I missing anything else?
 
 
 # Notes
@@ -23,7 +35,9 @@ This project contains an mflowgen design for the AHA compiler flow.
 
 - The metamapper step calls a script `map_dse_new.py`. This script is a slightly edited version of the `map_dse.py`. The only change that needs to be made is to set `DSE_PE_location = "DSE_outputs"`. The reason this is done is for metamapper to have it's separate input location rather than taking inputs directly from 'DSEGraphAnalysis' (i.e PE_gen step) output location in order to maintain modularity. This is especially necessary for parametric sweeps.
 
-- The clockwork step needs a list of environment variables to be set. The path where the clockwork step looks to find these is specified in `setup/inputs/flow_setup.sh`. The current design looks for a file `setup1.sh` located at `$my_root`    
+- The `dse_flow_tests()` function in the `build_set_test.cpp` script in clockwork currently needs to be modified manually to set a certain app. This script can be modified in future to accept the app name as an argument.   
+
+- The clockwork step also needs a list of environment variables to be set. The path where the clockwork step looks to find these is specified in `setup/inputs/flow_setup.sh`. The current design looks for a file `setup1.sh` located at `$my_root`    
 ```bash
 export BUILD_DIR=`pwd`
 export TRAVIS_BUILD_DIR=$BUILD_DIR
