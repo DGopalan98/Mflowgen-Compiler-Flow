@@ -19,9 +19,9 @@ This project contains an mflowgen design for the AHA compiler flow.
 
 
 # Notes
-- The PE_gen step needs a parameter `dse_merge_param` to be set. This parameter specifies which of the subgraphs are to be merged to form the PE. Ideally, this parameter is specified something like `"0 1 2"` which would mean that these three subgraphs are to be merged. However, when performing parametric sweeps, mflowgen appends the paramter values to the step names to create the different steps and the ' ' character causes issues with the step names. Hence the `dse_merge_param` is set as `"0-1-2"` instead. Before passing to the DSEGraphAnalysis tool, this string is converted by the step to the required format. Currently, the `construct_graph.py` file spcifes a sweep range on this parameter on line 143. To run without sweeping for a single set parameter value, uncommment line 31 and comment out line 143.
+- The PE_gen step needs a parameter `dse_merge_param` to be set. This parameter specifies which of the subgraphs are to be merged to form the PE. Ideally, this parameter is specified something like `"0 1 2"` which would mean that these three subgraphs are to be merged. However, when performing parametric sweeps, mflowgen appends the paramter values to the step names to create the different steps and the ' ' character causes issues with the step names. Hence the `dse_merge_param` is set as `"0-1-2"` instead. Before passing to the DSEGraphAnalysis tool, this string is converted by the step to the required format of "0 1 2". Currently, the `construct_graph.py` file spcifes a sweep range on this parameter on line 143. To run without sweeping for a single set parameter value, uncomment line 31 and comment out line 143.
 
-- The metamapper step calls a script `map_dse_new.py`. This script is a slightly edited version of the `map_dse.py`. The only change that needs to be made is to set `DSE_PE_location = "DSE_outputs"`. The reason this is done is for metamapper to have it's separate input location rather than taking input's directly from 'DSEGraphAnalysis' (i.e PE_gen step) output location in order to maintain modularity. This is especially necessary for parametric sweeps.
+- The metamapper step calls a script `map_dse_new.py`. This script is a slightly edited version of the `map_dse.py`. The only change that needs to be made is to set `DSE_PE_location = "DSE_outputs"`. The reason this is done is for metamapper to have it's separate input location rather than taking inputs directly from 'DSEGraphAnalysis' (i.e PE_gen step) output location in order to maintain modularity. This is especially necessary for parametric sweeps.
 
 - The clockwork step needs a list of environment variables to be set. The path where the clockwork step looks to find these is specified in `setup/inputs/flow_setup.sh`. The current design looks for a file `setup1.sh` located at `$my_root`    
 ```bash
@@ -51,7 +51,7 @@ export COREIR_DIR=$TRAVIS_BUILD_DIR/coreir
 export COREIR=1
 ```
 
-- The DC step defined here is a slight modification of the DC step defined at mflowgen/steps/synoptic-dc-synthesis. The first key change is that in our flow, the `design.v` RTL verilog produced by clockwork needs another `design_verilog_collateral.sv` file which defines certain modules used in `design.v`. The DC step copies contents of `design_verilog_collateral.sv` to `design2.sv`. In the file `dc/scripts/read_design.tcl` the line
+- The DC step defined here is a slight modification of the DC step defined at mflowgen/steps/synopsys-dc-synthesis. The first key change is that in our flow, the `design.v` RTL verilog produced by clockwork needs another `design_verilog_collateral.sv` file which defines certain modules used in `design.v`. The DC step copies contents of `design_verilog_collateral.sv` to `design2.sv`. In the file `dc/scripts/read_design.tcl` the line
 ```bash
 if { ![analyze -format sverilog $dc_rtl_handoff] } { exit 1 }
 ```
@@ -59,7 +59,7 @@ is modified to
 ```bash
 if { ![analyze -format sverilog {"inputs/design2.sv" "inputs/design.v"}] } { exit 1 }
 ```
-Apart from this, we also need to set DC to first synthesize the PE module `WrappedPE_wrapped` and then use the same synthesized PE whenever it is instantiated in a design. For this I added the following lines to the same file
+Apart from this, we also need to set DC to first synthesize the PE module `WrappedPE_wrapped` and then use the same synthesized PE whenever it is instantiated in a design. For this I added the following lines to the same file.
 ```bash
 current_design WrappedPE_wrapped
 compile_ultra
